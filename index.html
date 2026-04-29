@@ -116,12 +116,18 @@ window.register = async function(){
 
 // LOGIN
 window.login = async function(){
-  let email = document.getElementById("loginEmail").value;
-  let password = document.getElementById("loginPassword").value;
+  try{
+    let email = document.getElementById("loginEmail").value;
+    let password = document.getElementById("loginPassword").value;
 
-  await signInWithEmailAndPassword(auth, email, password);
+    const user = await signInWithEmailAndPassword(auth, email, password);
 
-  alert("Login successful ✅");
+    alert("Login successful ✅ " + user.user.email);
+
+  }catch(error){
+    alert("Login failed ❌: " + error.message);
+  }
+}
 }
 
 // LOGOUT
