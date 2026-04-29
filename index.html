@@ -1,94 +1,15 @@
-<script type="module">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>App Test</title>
+</head>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+<body style="background:#0f172a; color:white; text-align:center; font-family:Arial;">
 
-// FIREBASE CONFIG
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID"
-};
+<h1>Website Loaded ✅</h1>
+<p>If you see this, your HTML works.</p>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+<button onclick="alert('JavaScript works ✅')">Test Button</button>
 
-// PAGES
-const homePage = document.getElementById("homePage");
-const loginPage = document.getElementById("loginPage");
-const registerPage = document.getElementById("registerPage");
-const dashboard = document.getElementById("dashboard");
-
-// NAVIGATION
-window.goLogin = function(){
-  homePage.style.display = "none";
-  loginPage.style.display = "block";
-}
-
-window.goRegister = function(){
-  homePage.style.display = "none";
-  registerPage.style.display = "block";
-}
-
-window.showHome = function(){
-  homePage.style.display = "block";
-  loginPage.style.display = "none";
-  registerPage.style.display = "none";
-  dashboard.style.display = "none";
-}
-
-// REGISTER
-window.register = async function(){
-  try{
-    let email = document.getElementById("regEmail").value;
-    let password = document.getElementById("regPassword").value;
-
-    await createUserWithEmailAndPassword(auth, email, password);
-
-    alert("Registered successfully 🚀");
-
-  }catch(error){
-    alert("Register failed ❌: " + error.message);
-  }
-}
-
-// LOGIN
-window.login = async function(){
-  try{
-    let email = document.getElementById("loginEmail").value;
-    let password = document.getElementById("loginPassword").value;
-
-    const user = await signInWithEmailAndPassword(auth, email, password);
-
-    alert("Login successful ✅ " + user.user.email);
-
-  }catch(error){
-    alert("Login failed ❌: " + error.message);
-  }
-}
-
-// LOGOUT
-window.logout = function(){
-  signOut(auth);
-}
-
-// AUTH CHECK
-onAuthStateChanged(auth, (user)=>{
-  if(user){
-    homePage.style.display = "none";
-    loginPage.style.display = "none";
-    registerPage.style.display = "none";
-    dashboard.style.display = "block";
-  } else {
-    dashboard.style.display = "none";
-    homePage.style.display = "block";
-  }
-});
-
-</script>
+</body>
+</html>
