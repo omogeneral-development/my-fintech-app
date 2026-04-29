@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase App</title>
+
+  <style>
+    body{
+      font-family:Arial;
+      background:#0f172a;
+      color:white;
+      text-align:center;
+    }
+
+    input{
+      padding:10px;
+      margin:5px;
+      width:220px;
+      border:none;
+      border-radius:5px;
+    }
+
+    button{
+      padding:10px 15px;
+      margin:5px;
+      border:none;
+      border-radius:5px;
+      cursor:pointer;
+      background:#2563eb;
+      color:white;
+    }
+
+    #loginPage, #registerPage, #dashboard{
+      display:none;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Firebase Login System</h1>
+
+<!-- HOME -->
+<div id="homePage">
+  <button onclick="goLogin()">Login</button>
+  <button onclick="goRegister()">Register</button>
+</div>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <h2>Login</h2>
+  <input id="loginEmail" placeholder="Email"><br>
+  <input id="loginPassword" type="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- REGISTER -->
+<div id="registerPage">
+  <h2>Register</h2>
+  <input id="regEmail" placeholder="Email"><br>
+  <input id="regPassword" type="password" placeholder="Password"><br>
+  <button onclick="register()">Register</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <h2>Dashboard 👑</h2>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// PAGES
+const homePage = document.getElementById("homePage");
+const loginPage = document.getElementById("loginPage");
+const registerPage = document.getElementById("registerPage");
+const dashboard = document.getElementById("dashboard");
+
+// NAVIGATION
+window.goLogin = function(){
+  homePage.style.display = "none";
+  loginPage.style.display = "block";
+}
+
+window.goRegister = function(){
+  homePage.style.display = "none";
+  registerPage.style.display = "block";
+}
+
+// REGISTER
+window.register = async function(){
+  let email = document.getElementById("regEmail").value;
+  let password = document.getElementById("regPassword").value;
+
+  await createUserWithEmailAndPassword(auth, email, password);
+
+  alert("Registered ✅");
+}
+
+// LOGIN
+window.login = async function(){
+  let email = document.getElementById("loginEmail").value;
+  let password = document.getElementById("loginPassword").value;
+
+  await signInWithEmailAndPassword(auth, email, password);
+
+  alert("Login successful ✅");
+}
+
+// LOGOUT
+window.logout = function(){
+  signOut(auth);
+}
+
+// AUTO STATE
+onAuthStateChanged(auth, (user)=>{
+  if(user){
+    homePage.style.display = "none";
+    loginPage.style.display = "none";
+    registerPage.style.display = "none";
+    dashboard.style.display = "block";
+  } else {
+    dashboard.style.display = "none";
+    homePage.style.display = "block";
+  }
+});
+
+</script>
+
+</body>
+</html>
